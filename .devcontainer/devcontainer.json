@@ -9,9 +9,12 @@
 		"vscode": {
 			"extensions": [
 				"ms-vscode.cpptools-extension-pack",
-				"piotrkosek.vscode-gtest-test-adapter-with-code-lens",
 				"twxs.cmake",
-				"ms-vscode.cmake-tools"
+				"ms-vscode.cmake-tools",
+				"hediet.vscode-drawio",
+				"matepek.vscode-catch2-test-adapter",
+				"eamodio.gitlens",
+				"ms-vscode.cpptools-themes"
 			]
 		}
 	}
