@@ -27,13 +27,15 @@ add_executable(
         ${PROJECT_NAME}
         src/Main.cpp
         src/GameboyCPU.cpp
+        src/GameboyMMU.cpp
         src/Opcodes.cpp
-        src/GameboyCPUStates.cpp
+        src/GameboyBus.cpp
         )
 
 add_executable(
         GameboyTests
         tests/OpcodeTest.cpp
+        tests/GameboyBusTest.cpp
 )
 
 target_link_libraries(

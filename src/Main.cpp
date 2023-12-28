@@ -1,16 +1,34 @@
 #include "GameboyCPU.h"
+#include "GameboyMMU.h"
 #include "Opcodes.h"
 
 int main()
 {
-    GameboyCPU cpu;
+    GameboyBus bus;
+    GameboyMMU mmu(bus);
+    GameboyCPU cpu(bus);
 
-    std::unique_ptr<IOpcode> command = std::make_unique<NewOpcode>(cpu);
+    TestEvent tEvent;
 
-    OpcodeInvoker invoker;
+    bus.subscribeToEvent(TestEvent::TEST_1, &cpu);
+    bus.publishEvent(TestEvent::TEST_1, tEvent);
+    bus.unsubscribeToEvent(TestEvent::TEST_1, &cpu);
+    bus.publishEvent(TestEvent::TEST_1, tEvent);
 
-    invoker.setOpcode(std::move(command));
-    invoker.execute();
+    bus.registerHandler(TestRequest::TEST_1, &cpu);
 
+    TestRequest tRequest;
+    std::unique_ptr<Response> response = bus.processRequest(TestRequest::TEST_1, tRequest);
+
+    TestResponse* testResponse = dynamic_cast<TestResponse*>(response.get());
+
+    if(testResponse)
+    {
+        int data = testResponse->responseData;
+        std::cout << data << std::endl;
+    }
+
+    bus.unregisterHandler(TestRequest::TEST_1);
+    bus.processRequest(TestRequest::TEST_1, tRequest);
     return 0;
 }

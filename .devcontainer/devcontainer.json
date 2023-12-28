@@ -13,7 +13,6 @@
 				"ms-vscode.cmake-tools",
 				"hediet.vscode-drawio",
 				"matepek.vscode-catch2-test-adapter",
-				"eamodio.gitlens",
 				"ms-vscode.cpptools-themes"
 			]
 		}

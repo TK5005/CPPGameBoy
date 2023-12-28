@@ -16,5 +16,4 @@ void OpcodeInvoker::execute()
 void NewOpcode::execute()
 {
     std::cout << "Executing Command A" << std::endl;
-    cpu.sayHi();
 }
