@@ -31,6 +31,7 @@ class Cartridge
         uint8_t headerChecksum;
         uint16_t globalChecksum;
         std::vector<uint8_t> loadRom(const std::string& filename);
+        void parseHeaderData();
 };
 
 #endif

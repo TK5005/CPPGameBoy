@@ -7,17 +7,31 @@
 Cartridge::Cartridge()
 {
     std::cout << "Creating cartridge without data" << std::endl;
+    std::cout << "Empty Cartridge Created" << std::endl;
 }
 
 Cartridge::Cartridge(std::vector<uint8_t> data) : romData(data)
 {
     std::cout << "Creating cartridge with data" << std::endl;
+    // TODO: Check to see if romData is valid
+    std::cout << "ROM data loaded" << std::endl;
+    parseHeaderData();
+    std::cout << "Cartridge Created" << std::endl;
 }
 
 Cartridge::Cartridge(const std::string& filename)
 {
     std::cout << "Creating cartridge from filename" << std::endl;
     romData = loadRom(filename);
+    // TODO: Check to see if romData is valid
+    std::cout << "ROM data loaded" << std::endl;
+    parseHeaderData();
+    std::cout << "Cartridge Created" << std::endl;
+}
+
+void Cartridge::parseHeaderData()
+{
+    std::cout << "Parsing Header Data" << std::endl;
 }
 
 std::vector<uint8_t> Cartridge::loadRom(const std::string& filename)
