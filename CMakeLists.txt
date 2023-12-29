@@ -30,16 +30,23 @@ add_executable(
         src/GameboyMMU.cpp
         src/Opcodes.cpp
         src/GameboyBus.cpp
+        src/Cartridge.cpp
         )
 
 add_executable(
-        GameboyTests
-        tests/OpcodeTest.cpp
-        tests/GameboyBusTest.cpp
+        GameboyUnitTests
+        unitTests/OpcodeTest.cpp
+        unitTests/GameboyBusTest.cpp
+)
+
+add_executable(
+        CartridgeDevTest
+        devTests/CartridgeDevTest.cpp
+        src/Cartridge.cpp
 )
 
 target_link_libraries(
-        GameboyTests
+        GameboyUnitTests
         GTest::gtest_main
 )
 
@@ -49,5 +56,7 @@ target_link_libraries(
         sfml-audio
 )
 
+file(COPY roms DESTINATION .)
+
 include(GoogleTest)
-gtest_discover_tests(GameboyTests)
+gtest_discover_tests(GameboyUnitTests)

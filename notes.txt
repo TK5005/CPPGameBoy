@@ -1,4 +1,7 @@
-Modularity: Keep different components (CPU, MMU, GPU, etc.) separated. This makes it easier to manage and update individual parts of the emulator.
-Observer Pattern: Useful for implementing things like interrupts, where the CPU needs to be notified of events from other components like the timer or PPU.
-State Pattern: Can be used for CPU states, different modes of the GPU, etc.
-Command Pattern: Useful for implementing CPU instructions, allowing for a more manageable way of executing and adding new instructions.
+CPU
+MMU
+PPU
+APU
+Cartridge
+Timer
+Display

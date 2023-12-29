@@ -1,6 +1,6 @@
-#include "GameboyCPU.h"
-#include "GameboyMMU.h"
-#include "Opcodes.h"
+#include "../include/GameboyCPU.h"
+#include "../include/GameboyMMU.h"
+#include "../include/Opcodes.h"
 
 int main()
 {
