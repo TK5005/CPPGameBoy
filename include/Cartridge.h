@@ -4,13 +4,15 @@
 #include <vector>
 #include <cstdint>
 #include <string>
+#include <limits>
 
 class Cartridge
 {
     public:
         Cartridge();
         Cartridge(std::vector<uint8_t> data);
-        void printROMData();
+        Cartridge(const std::string& filename);
+        void printROMData(size_t start = 0, size_t end = std::numeric_limits<size_t>::max(), size_t bytesPerRow = 16);
     private:
         std::vector<uint8_t> romData;
         std::vector<uint8_t> entryPoint;
@@ -28,6 +30,7 @@ class Cartridge
         uint8_t maskROMVersionNumber;
         uint8_t headerChecksum;
         uint16_t globalChecksum;
+        std::vector<uint8_t> loadRom(const std::string& filename);
 };
 
 #endif
