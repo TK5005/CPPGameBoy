@@ -9,16 +9,15 @@
 
 class IGameboyCPUState;
 
-class GameboyCPU : public IEventSubscriber, public IRequestHandler
+class GameboyCPU : public IEventSubscriber
 {
     public:
         // Constructor
         GameboyCPU(GameboyBus& bus);
         void onEvent(const Event& event);
-        Response* handleRequest(const Request& request);
     private:
-        GameboyBus& bus;
         std::unique_ptr<IGameboyCPUState> currentState;
+        GameboyBus& bus;
 
         // CPU Registers
         union {
@@ -59,7 +58,7 @@ class GameboyCPU : public IEventSubscriber, public IRequestHandler
         // State logic
         void setState(std::unique_ptr<IGameboyCPUState> state);
         void handleInput();
-        void update();  
+        void update();
 };
 
 class IGameboyCPUState

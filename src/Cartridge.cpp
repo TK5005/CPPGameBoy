@@ -12,22 +12,15 @@ Cartridge::Cartridge()
 
 Cartridge::Cartridge(std::vector<uint8_t> data) : romData(data)
 {
-    std::cout << "Creating cartridge with data" << std::endl;
     // TODO: Check to see if romData is valid
-    std::cout << "ROM data loaded" << std::endl;
     parseHeaderData();
-    std::cout << "Cartridge Created" << std::endl;
 }
 
 Cartridge::Cartridge(const std::string& filename)
 {
-    std::cout << "Creating cartridge from filename" << std::endl;
     romData = loadRom(filename);
     // TODO: Check to see if romData is valid
-    std::cout << "ROM data loaded" << std::endl;
     parseHeaderData();
-    printCartridgeData();
-    std::cout << "Cartridge Created" << std::endl;
 }
 
 void Cartridge::parseHeaderData()
@@ -84,9 +77,9 @@ std::vector<uint8_t> Cartridge::getROMData(size_t start, size_t end)
         return data;
     }
 
-    if (end > romData.size())
+    if (end > romData.size()-1)
     {
-        end = romData.size();
+        end = romData.size()-1;
     }
 
     for (size_t i = start; i <= end; ++i)
@@ -97,21 +90,6 @@ std::vector<uint8_t> Cartridge::getROMData(size_t start, size_t end)
     return data;
 }
 
-void Cartridge::printROMData(std::vector<uint8_t> data, size_t bytesPerRow)
-{
-    int i = 0;
-    for (auto byte : data)
-    {
-        printByte(data[i]);
-        std::cout << " ";
-        if ((i + 1) % bytesPerRow == 0)
-        {
-            std::cout << std::endl;
-        }
-        i++;
-    }
-}
-
 bool Cartridge::passesHeaderChecksum()
 {
     uint8_t checksum = 0;
@@ -119,11 +97,6 @@ bool Cartridge::passesHeaderChecksum()
         checksum = checksum - getROMData(address, address)[0] - 1;
     }
     return checksum == headerChecksum;
-}
-
-void Cartridge::printByte(uint8_t byte)
-{
-    std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte) << std::dec;
 }
 
 std::string cartridgeTypeToString(CartridgeType type)
@@ -355,22 +328,22 @@ std::string oldLicenseeCodeToString(OldLicenseeCode code) {
 void Cartridge::printCartridgeData()
 {
     std::cout << "Entry Point: ";
-    printROMData(entryPoint);
+    ByteUtility::printData(entryPoint);
     std::cout << std::endl;
     std::cout << "Nintendo Logo:" << std::endl;
-    printROMData(nintendoLogo);
+    ByteUtility::printData(nintendoLogo);
     std::cout << "Title: " << title << std::endl;
     std::cout << "Manufacturer Code: ";
-    printROMData(manufacturerCode);
+    ByteUtility::printData(manufacturerCode);
     std::cout << std::endl;
     std::cout << "CGB Flag: ";
-    printByte(cgbFlag);
+    ByteUtility::printByte(cgbFlag);
     std::cout << std::endl;
     std::cout << "New Licensee Code: ";
-    printROMData(newLicenseeCode);
+    ByteUtility::printData(newLicenseeCode);
     std::cout << std::endl;
     std::cout << "SGB Flag: ";
-    printByte(sgbFlag);
+    ByteUtility::printByte(sgbFlag);
     std::cout << std::endl;
     std::cout << "Cartridge Type: " << cartridgeTypeToString(cartridgeType) << std::endl;
     std::cout << "ROM Size: " << romSizeToString(romSize) << std::endl;
@@ -378,13 +351,13 @@ void Cartridge::printCartridgeData()
     std::cout << "Destination Code: " << destinationCodeToString(destinationCode) << std::endl;
     std::cout << "Old Licensee Code: " << oldLicenseeCodeToString(oldLicenseeCode) << std::endl;
     std::cout << "Mask ROM version number: ";
-    printByte(maskROMVersionNumber);
+    ByteUtility::printByte(maskROMVersionNumber);
     std::cout << std::endl;
     std::cout << "Header Checksum: ";
-    printByte(headerChecksum);
+    ByteUtility::printByte(headerChecksum);
     std::cout << std::endl;
     std::cout << "Global Checksum: ";
-    printROMData(globalChecksum);
+    ByteUtility::printData(globalChecksum);
     std::cout << std::endl;
     if(passesHeaderChecksum())
     {
@@ -392,4 +365,9 @@ void Cartridge::printCartridgeData()
     } else {
         std::cout << "Header Checksum failed" << std::endl;
     }
+}
+
+std::string Cartridge::getTitle()
+{
+    return title;
 }

@@ -14,7 +14,8 @@
 				"hediet.vscode-drawio",
 				"matepek.vscode-catch2-test-adapter",
 				"ms-vscode.cpptools-themes",
-				"Gruntfuggly.todo-tree"
+				"Gruntfuggly.todo-tree",
+				"ms-vscode.hexeditor"
 			]
 		}
 	}

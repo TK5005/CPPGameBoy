@@ -5,26 +5,13 @@
 GameboyCPU::GameboyCPU(GameboyBus& bus) : bus(bus), AF(0), BC(0), DE(0), HL(0), SP(0), PC(0)
 {
     std::cout << "Gameboy CPU Created" << std::endl;
+    bus.setCPU(this);
 }
+    
 
 void GameboyCPU::onEvent(const Event& event)
 {
     // TODO: Check through events I'm interested in and act accordingly
-}
-
-Response* GameboyCPU::handleRequest(const Request& request)
-{
-    // TODO: Check through requests I can handle and perform the correct actions
-    
-    /*const TestRequest* testRequest = dynamic_cast<const TestRequest*>(&request);
-    if (testRequest) {
-        std::string requestType = testRequest->getRequestType();
-        std::cout << "CPU Handling Request: " << requestType << std::endl;
-        TestResponse* response = new TestResponse();
-        response->responseData = 23;
-        return response;
-    }*/
-    return nullptr;
 }
 
 void GameboyCPU::setState(std::unique_ptr<IGameboyCPUState> state)

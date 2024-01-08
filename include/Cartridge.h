@@ -6,6 +6,8 @@
 #include <string>
 #include <limits>
 
+#include "ByteUtility.h"
+
 enum CartridgeType : uint8_t
 {
     ROM_ONLY = 0x00,
@@ -230,6 +232,7 @@ class Cartridge
         void printCartridgeData();
         void printROMData(std::vector<uint8_t> data, size_t bytesPerRow = 16);
         std::vector<uint8_t> getROMData(size_t start = 0, size_t end = std::numeric_limits<size_t>::max());
+        std::string getTitle();
     private:
         std::vector<uint8_t> romData;
         std::vector<uint8_t> entryPoint;

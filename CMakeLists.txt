@@ -31,6 +31,7 @@ add_executable(
         src/Opcodes.cpp
         src/GameboyBus.cpp
         src/Cartridge.cpp
+        src/ByteUtility.cpp
         )
 
 add_executable(
@@ -43,6 +44,28 @@ add_executable(
         CartridgeDevTest
         devTests/CartridgeDevTest.cpp
         src/Cartridge.cpp
+        src/ByteUtility.cpp
+)
+
+add_executable(
+        MMUDevTest
+        devTests/MMUDevTest.cpp
+        src/GameboyBus.cpp
+        src/GameboyMMU.cpp
+        src/GameboyCPU.cpp
+        src/Cartridge.cpp
+        src/ByteUtility.cpp
+)
+
+add_executable(
+        GameboyBusDevTest
+        devTests/GameboyBusDevTest.cpp
+        src/GameboyCPU.cpp
+        src/GameboyMMU.cpp
+        src/Opcodes.cpp
+        src/GameboyBus.cpp
+        src/Cartridge.cpp
+        src/ByteUtility.cpp
 )
 
 target_link_libraries(

@@ -29,23 +29,15 @@ void GameboyBus::publishEvent(const std::string& eventType, const Event& event)
     }
 }
 
-void GameboyBus::registerHandler(const std::string& requestType, IRequestHandler* handler)
+void GameboyBus::setCPU(GameboyCPU* cpu)
 {
-    handlers[requestType] = handler;
+    std::cout << "Connecting bus to cpu" << std::endl;
+    this->cpu = cpu;
 }
 
-void  GameboyBus::unregisterHandler(const std::string& requestType) {
-    handlers.erase(requestType);
+void GameboyBus::setMMU(GameboyMMU* mmu)
+{
+    std::cout << "Connecting bus to mmu" << std::endl;
+    this->mmu = mmu;
 }
 
-std::unique_ptr<Response> GameboyBus::processRequest(const std::string& requestType, const Request& request)
-{
-    if (handlers.find(requestType) != handlers.end()) {
-        std::unique_ptr<Response> response = std::unique_ptr<Response>(handlers[requestType]->handleRequest(request));
-        if(response)
-        {
-            return response;
-        }
-    }
-    return nullptr;
-}
