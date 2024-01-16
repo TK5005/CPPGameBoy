@@ -68,6 +68,18 @@ add_executable(
         src/ByteUtility.cpp
 )
 
+add_executable(
+        ClockDevTest
+        devTests/ClockDevTest.cpp
+        src/GameboyCPU.cpp
+        src/GameboyMMU.cpp
+        src/Opcodes.cpp
+        src/GameboyBus.cpp
+        src/Cartridge.cpp
+        src/ByteUtility.cpp
+        src/Clock.cpp
+)
+
 target_link_libraries(
         GameboyUnitTests
         GTest::gtest_main
@@ -77,6 +89,13 @@ target_link_libraries(
         ${PROJECT_NAME}
         sfml-graphics
         sfml-audio
+)
+
+target_link_libraries(
+        ClockDevTest
+        sfml-graphics
+        sfml-audio
+        sfml-system
 )
 
 file(COPY roms DESTINATION .)

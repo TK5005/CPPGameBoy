@@ -26,70 +26,96 @@ GameboyMMU::GameboyMMU(GameboyBus& bus) : bus(bus), memory(65536)
     bus.setMMU(this);
 }
 
+bool GameboyMMU::write(uint16_t address, uint8_t data)
+{
+    if (address >= memory.size())
+    {
+        std::cerr << "Address is out of bounds." << std::endl;
+        return false;
+    }
+
+    memory[address] = data;
+
+    // If address is in the range of C000 - DDFF, write to E000 - FDFF as well
+    if (address >= 0xC000 && address <= 0xDDFF)
+    {
+        memory[address + 0x2000] = data;
+        return true;
+    }
+
+    // If address is in the range of E000 - FDFF, write to C000 - DDFF as well
+    if (address >= 0xE000 && address <= 0xFDFF)
+    {
+        memory[address - 0x2000] = data;
+        return true;
+    }
+
+    return true;
+}
+
+uint8_t GameboyMMU::read(uint16_t address)
+{
+    if (address >= memory.size())
+    {
+        std::cerr << "Address is out of bounds." << std::endl;
+        return 0x00;
+    }
+
+    return memory[address];
+}
+
 void GameboyMMU::eraseMemory()
 {
-    for(int i = 0; i < memory.size(); ++i)
+    for (size_t i = 0; i < memory.size(); ++i)
     {
         memory[i] = 0x00;
     }
 }
 
-uint8_t GameboyMMU::read(uint16_t address)
-{
-    if(address >= memory.size() || address < 0)
-    {
-        std::cerr << "Address is out of bounds." << std::endl;
-        return 0;
-    } else {
-        return memory[address];
-    }
-}
-
-bool GameboyMMU::write(uint16_t address, uint8_t value)
-{
-    if(address >= memory.size() || address < 0)
-    {
-        std::cerr << "Address is out of bounds." << std::endl;
-        return false;
-    } else {
-        memory[address] = value;
-    }
-    return true;
-}
-
 std::vector<uint8_t> GameboyMMU::getData(size_t start, size_t end)
 {
-    std::vector<uint8_t> data;
-
-    if (start >= memory.size())
+    try
     {
-        std::cerr << "Start index is out of bounds." << std::endl;
+        // Check bounds
+        memory.at(start);
+        if (end >= memory.size())
+        {
+            end = memory.size() - 1;
+        }
+        memory.at(end);
+
+        // Create data vector and insert range from memory
+        std::vector<uint8_t> data;
+        data.insert(data.end(), memory.begin() + start, memory.begin() + end + 1);
+
         return data;
     }
-
-    if (end > memory.size()-1)
+    catch (const std::out_of_range& e)
     {
-        end = memory.size()-1;
+        std::cerr << "Index is out of bounds: " << e.what() << std::endl;
+        return std::vector<uint8_t>();
     }
-
-    for (size_t i = start; i <= end; ++i)
-    {
-        data.push_back(memory[i]);
-    }
-
-    return data;
 }
 
 bool GameboyMMU::setCartridge(Cartridge* cart)
 {
+    if (cart == nullptr)
+    {
+        std::cerr << "Invalid cartridge." << std::endl;
+        return false;
+    }
+
     this->cart = cart;
     std::cout << "Loading cartridge " << cart->getTitle() << " into memory management unit." << std::endl;
+
     std::vector<uint8_t> romData = cart->getROMData();
     uint16_t address = 0x0000;  
+
     for (uint8_t i : romData)
     {
         write(address, i);
         address ++;
     }
+
     return true;
 }
